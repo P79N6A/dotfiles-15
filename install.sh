@@ -6,6 +6,9 @@ basedir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ln -isT ${basedir}/ ~/.dotfiles
 
 # emacs
-rm -rf ~/.emacs.d
+rm -f ~/.emacs.d
 ln -isT ~/.dotfiles/emacs.d/ ~/.emacs.d
 
+# yasnippets
+rm -f ~/.yasnippets
+ln -isT ~/.dotfiles/yasnippets ~/.yasnippet

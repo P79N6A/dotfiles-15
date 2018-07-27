@@ -128,7 +128,7 @@
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (setq yas-snippet-dirs '("~/.yasnippets"))
   (yas-global-mode 1))
 
 ;; Mark Ring
