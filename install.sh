@@ -3,12 +3,25 @@
 basedir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # dotfiles
-ln -isT ${basedir}/ ~/.dotfiles
+rm -f ~/.dotfiles
+ln -sT ${basedir}/ ~/.dotfiles
+
+# bash profile
+rm -f ~/.bash_profile
+ln -sT ~/.dotfiles/bash_profile ~/.bash_profile
+
+# bashrc
+rm -f ~/.bashrc
+ln -sT ~/.dotfiles/bashrc ~/.bashrc
+
+# ls_colors
+rm -f ~/.ls_colors
+ln -sT ~/.dotfiles/ls_colors ~/.ls_colors
 
 # emacs
 rm -f ~/.emacs.d
-ln -isT ~/.dotfiles/emacs.d/ ~/.emacs.d
+ln -sT ~/.dotfiles/emacs.d/ ~/.emacs.d
 
 # yasnippets
 rm -f ~/.yasnippets
-ln -isT ~/.dotfiles/yasnippets ~/.yasnippet
+ln -sT ~/.dotfiles/yasnippets ~/.yasnippets
