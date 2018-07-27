@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 ORIG DEST"
+    exit 1
+fi
+
+grep "$1" * -RIl | xargs sed -i "s#$1#$2#g"

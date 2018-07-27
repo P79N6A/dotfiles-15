@@ -6,7 +6,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # Environment Variables
-export PATH="${HOME}/.local/bin:${PATH}"
+export PATH="${HOME}/.dotfiles/bin:${PATH}"
 
 # Alias
 alias ls='ls --color'
