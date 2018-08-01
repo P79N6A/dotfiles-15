@@ -11,7 +11,7 @@
  '(org-agenda-files (quote ("~/doc/gtd.org")))
  '(package-selected-packages
    (quote
-    (monokai lua-mode darkokai-theme monokai-theme dracula-theme yasnippet hungry-delete sr-speedbar flycheck-rtags company-ycmd ycmd helm-flx company-flx flx company-irony irony company-rtags helm-rtags rtags flycheck company helm-projectile projectile helm fill-column-indicator exec-path-from-shell use-package))))
+    (magit monokai lua-mode darkokai-theme monokai-theme dracula-theme yasnippet hungry-delete sr-speedbar flycheck-rtags company-ycmd ycmd helm-flx company-flx flx company-irony irony company-rtags helm-rtags rtags flycheck company helm-projectile projectile helm fill-column-indicator exec-path-from-shell use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
