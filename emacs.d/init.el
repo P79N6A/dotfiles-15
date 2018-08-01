@@ -44,7 +44,9 @@
 ;; Theme
 ;; (load-theme 'tango-dark t)
 ;; (load-theme 'dracula t)
-(load-theme 'monokai t)
+(use-package monokai-theme
+  :ensure t
+  :config (load-theme 'monokai t))
 
 ;; Basic UI setup
 (setq inhibit-startup-screen t)
