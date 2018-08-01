@@ -86,23 +86,30 @@
 (setq-default indent-tabs-mode nil)
 (global-set-key (kbd "RET") 'newline-and-indent)
 
+;;
+;; linum-mode is too slow and laggy, so I tried the nlinum -mode
 ;; Line number
-(global-linum-mode t)
-(unless window-system
-  (add-hook 'linum-before-numbering-hook
-            (lambda ()
-              (setq-local linum-format-fmt
-                          (let ((w (length (number-to-string
-                                            (count-lines (point-min) (point-max))))))
-                            (concat "%" (number-to-string w) "d"))))))
+;; (global-linum-mode t)
+;; (unless window-system
+;;   (add-hook 'linum-before-numbering-hook
+;;             (lambda ()
+;;               (setq-local linum-format-fmt
+;;                           (let ((w (length (number-to-string
+;;                                             (count-lines (point-min) (point-max))))))
+;;                             (concat "%" (number-to-string w) "d"))))))
 
-(defun linum-format-func (line)
-  (concat
-   (propertize (format linum-format-fmt line) 'face 'linum)
-   (propertize " " 'face 'mode-line)))
+;; (defun linum-format-func (line)
+;;   (concat
+;;    (propertize (format linum-format-fmt line) 'face 'linum)
+;;    (propertize " " 'face 'mode-line)))
 
-(unless window-system
-  (setq linum-format 'linum-format-func))
+;; (unless window-system
+;;   (setq linum-format 'linum-format-func))
+
+(use-package nlinum
+  :ensure t
+  :config
+  (global-nlinum-mode t))
 
 ;; Column indicator
 (use-package fill-column-indicator
@@ -244,9 +251,9 @@
   ;; Set backends for company
   (setq-default company-backends '(company-capf company-keywords))
   ;; Immediately auto compelete (no delay)
-  (setq company-idle-delay 1)
+  (setq company-idle-delay 0.5)
   ;; Auto complete after 1 char is entered
-  (setq company-minimum-prefix-length 2)
+  (setq company-minimum-prefix-length 1)
   (setq company-show-numbers t))
 
 ;;
