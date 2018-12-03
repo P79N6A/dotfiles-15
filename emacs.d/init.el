@@ -8,6 +8,7 @@
 
 ;; Setup local package load path
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/")
 
 (require 'package)
 ;; Setup package repositories
@@ -316,8 +317,10 @@
 ;; RTags
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; rtags package is not "ensured" by use-package
+;; Cause we must use the same version with the rdm installed
+;; Thus we require that rtags should be installed manually and added to load-path
 (use-package rtags
-  :ensure t
   :config
   (setq rtags-completions-enabled t)
   (setq rtags-autostart-diagnostics t)
