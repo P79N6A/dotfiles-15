@@ -7,6 +7,7 @@ fi
 
 # Environment Variables
 # Local Executables
+export PATH="${HOME}/.local/bin:${PATH}"
 export PATH="${HOME}/.dotfiles/bin:${PATH}"
 # macOS Homebrew Compatibility
 # Import serveral paths of the homebrew-installed packges into PATH.

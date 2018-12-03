@@ -290,27 +290,29 @@
 ;; Flycheck
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package flycheck
-  :ensure t
-  :hook (prog-mode . flycheck-mode))
+;; (use-package flycheck
+;;   :ensure t
+;;   :hook (prog-mode . flycheck-mode))
 
-(use-package flycheck-rtags
-  :ensure t
-  :config
-  (defun flycheck-rtags-setup ()
-    (flycheck-select-checker 'rtags)
-    ;; RTags creates more accurate overlays.
-    (setq-local flycheck-highlighting-mode nil)
-    (setq-local flycheck-check-syntax-automatically nil))
-  (add-hook 'c-mode-hook #'flycheck-rtags-setup)
-  (add-hook 'c++-mode-hook #'flycheck-rtags-setup))
+;; (use-package flycheck-rtags
+;;   :ensure t
+;;   :config
+;;   (defun flycheck-rtags-setup ()
+;;     (flycheck-select-checker 'rtags)
+;;     ;; RTags creates more accurate overlays.
+;;     (setq-local flycheck-highlighting-mode nil)
+;;     (setq-local flycheck-check-syntax-automatically nil))
+;;   (add-hook 'c-mode-hook #'flycheck-rtags-setup)
+;;   (add-hook 'c++-mode-hook #'flycheck-rtags-setup))
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C/C++ Basic
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq-default c-basic-offset 4)
-(defun my-c++-setup () (c-set-offset 'innamespace [0]))
+(defun my-c++-setup ()
+  (c-set-offset 'innamespace [0])
+  (c-set-offset 'brace-list-intro '+))
 (add-hook 'c++-mode-hook 'my-c++-setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -323,7 +325,7 @@
 (use-package rtags
   :config
   (setq rtags-completions-enabled t)
-  (setq rtags-autostart-diagnostics t)
+  ;; (setq rtags-autostart-diagnostics t)
   :bind (:map c-mode-base-map
               ("M-." . rtags-find-symbol-at-point)
               ("M-," . rtags-find-references-at-point)))
