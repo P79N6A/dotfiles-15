@@ -6,6 +6,8 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # Environment Variables
+# Set git env
+export GITEDITOR="emacs"
 # Local Executables
 export PATH="${HOME}/.local/bin:${PATH}"
 export PATH="${HOME}/.dotfiles/bin:${PATH}"
