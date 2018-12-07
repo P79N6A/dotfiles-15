@@ -18,6 +18,10 @@ ln -sT ~/.dotfiles/bashrc ~/.bashrc
 rm -f ~/.ls_colors
 ln -sT ~/.dotfiles/ls_colors ~/.ls_colors
 
+# tmux
+rm -f ~/.tmux.conf
+ln -sT ~/.dotfiles/tmux.conf ~/.tmux.conf
+
 # emacs
 rm -f ~/.emacs.d
 ln -sT ~/.dotfiles/emacs.d/ ~/.emacs.d
