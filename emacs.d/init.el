@@ -383,6 +383,23 @@
   :config (company-ycmd-setup))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Rust
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package rust-mode
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'lsp-rust-enable))
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
+
+(use-package lsp-rust
+  :ensure t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; KRM: Keep Rolling Meeting
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

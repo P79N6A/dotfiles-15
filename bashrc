@@ -7,7 +7,10 @@ fi
 
 # Environment Variables
 # Set git env
-export GITEDITOR="emacs"
+export GIT_EDITOR="emacs"
+# Set locale
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
 # Local Executables
 export PATH="${HOME}/.local/bin:${PATH}"
 export PATH="${HOME}/.dotfiles/bin:${PATH}"
