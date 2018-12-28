@@ -196,7 +196,8 @@
   (;; Enable Helm for various scenarios
    ("M-x" . helm-M-x)
    ("C-x b" . helm-mini)
-   ("C-x C-f" . helm-find-files))
+   ("C-x C-f" . helm-find-files)
+   ("C-x i" . helm-imenu))
   :bind
   (:map helm-map
         ;; rebind tab to run persistent action
