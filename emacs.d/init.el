@@ -256,35 +256,35 @@
 ;; Company
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package company
-  :ensure t
-  :hook (prog-mode . company-mode)
-  :config
-  ;; Set backends for company
-  (setq-default company-backends '(company-capf company-keywords))
-  ;; Immediately auto compelete (no delay)
-  (setq company-idle-delay 0.5)
-  ;; Auto complete after 1 char is entered
-  (setq company-minimum-prefix-length 1)
-  (setq company-show-numbers t))
+;; (use-package company
+;;   :ensure t
+;;   :hook (prog-mode . company-mode)
+;;   :config
+;;   ;; Set backends for company
+;;   (setq-default company-backends '(company-capf company-keywords))
+;;   ;; Immediately auto compelete (no delay)
+;;   (setq company-idle-delay 0.5)
+;;   ;; Auto complete after 1 char is entered
+;;   (setq company-minimum-prefix-length 1)
+;;   (setq company-show-numbers t))
 
 ;;
 ;; Turn off fci-mode temporarily when company is completing.
 ;; For that fci-mode can make company tooltip mis-positioned.
 ;;
-(defvar-local company-fci-mode-on-p nil)
+;; (defvar-local company-fci-mode-on-p nil)
 
-(defun company-turn-off-fci (&rest ignore)
-  (when (boundp 'fci-mode)
-    (setq company-fci-mode-on-p fci-mode)
-    (when fci-mode (fci-mode -1))))
+;; (defun company-turn-off-fci (&rest ignore)
+;;   (when (boundp 'fci-mode)
+;;     (setq company-fci-mode-on-p fci-mode)
+;;     (when fci-mode (fci-mode -1))))
 
-(defun company-maybe-turn-on-fci (&rest ignore)
-  (when company-fci-mode-on-p (fci-mode 1)))
+;; (defun company-maybe-turn-on-fci (&rest ignore)
+;;   (when company-fci-mode-on-p (fci-mode 1)))
 
-(add-hook 'company-completion-started-hook 'company-turn-off-fci)
-(add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
-(add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
+;; (add-hook 'company-completion-started-hook 'company-turn-off-fci)
+;; (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
+;; (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flycheck
@@ -368,36 +368,36 @@
 ;; ycmd
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package ycmd
-  :ensure t
-  :hook
-  (c-mode . ycmd-mode)
-  (c++-mode . ycmd-mode)
-  :config
-  (set-variable 'ycmd-server-command
-                `("python", (file-truename "~/.emacs.d/ycmd/ycmd/")))
-  (setq ycmd-extra-conf-handler 'load))
+;; (use-package ycmd
+;;   :ensure t
+;;   :hook
+;;   (c-mode . ycmd-mode)
+;;   (c++-mode . ycmd-mode)
+;;   :config
+;;   (set-variable 'ycmd-server-command
+;;                 `("python", (file-truename "~/.emacs.d/ycmd/ycmd/")))
+;;   (setq ycmd-extra-conf-handler 'load))
 
-(use-package company-ycmd
-  :ensure t
-  :config (company-ycmd-setup))
+;; (use-package company-ycmd
+;;   :ensure t
+;;   :config (company-ycmd-setup))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rust
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package rust-mode
-  :ensure t
-  :config
-  (add-hook 'rust-mode-hook #'lsp-rust-enable))
+;; (use-package rust-mode
+;;   :ensure t
+;;   :config
+;;   (add-hook 'rust-mode-hook #'lsp-rust-enable))
 
-(use-package lsp-mode
-  :ensure t
-  :config
-  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :config
+;;   (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
 
-(use-package lsp-rust
-  :ensure t)
+;; (use-package lsp-rust
+;;   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; KRM: Keep Rolling Meeting
