@@ -23,6 +23,10 @@
 (unless package-archive-contents (package-refresh-contents))
 ;; Install use-package if necessary
 (unless (package-installed-p 'use-package) (package-install 'use-package))
+;; Gathering use-package statistics
+;; M-x use-package-report to see the results
+(require 'use-package)
+(setq use-package-compute-statistics t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common setup
@@ -43,9 +47,9 @@
 (set-frame-font "Inconsolata 18" nil t)
 
 ;; Theme
-(use-package monokai-theme
-  :ensure t
-  :config (load-theme 'monokai t))
+;; (use-package monokai-theme
+;;   :ensure t
+;;   :config (load-theme 'monokai t))
 
 ;; Basic UI setup
 (setq inhibit-startup-screen t)
@@ -119,7 +123,8 @@
   :ensure t
   :config
   (setq yas-snippet-dirs '("~/.yasnippets"))
-  (yas-global-mode 1))
+  :hook
+  (prog-mode . yas-minor-mode))
 
 ;; Mark Ring
 ;; C-SPC immediately after C-u C-SPC cycles the mark ring.
@@ -173,10 +178,7 @@
 
 (use-package org
   :ensure t
-  :bind (("C-c l" . org-store-link)
-	 ("C-c a" . org-agenda)
-	 ("C-c c" . org-capture)
-	 ("C-c b" . org-iswitchb)))
+  :mode ("\\.org\\'" . org-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Helm
@@ -185,18 +187,18 @@
 (use-package helm
   :ensure t
   :bind
-  (
-   ;; Enable Helm for various scenarios
+  (;; Enable Helm for various scenarios
    ("M-x" . helm-M-x)
    ("C-x b" . helm-mini)
    ("C-x C-f" . helm-find-files))
-  :bind (:map helm-map
-              ;; rebind tab to run persistent action
-              ("<tab>" . helm-execute-persistent-action)
-              ;; make TAB work in terminal
-              ("C-i" . helm-execute-persistent-action)
-              ;; list actions using C-z
-              ("C-z" . helm-select-action))
+  :bind
+  (:map helm-map
+        ;; rebind tab to run persistent action
+        ("<tab>" . helm-execute-persistent-action)
+        ;; make TAB work in terminal
+        ("C-i" . helm-execute-persistent-action)
+        ;; list actions using C-z
+        ("C-z" . helm-select-action))
   :config
   ;; Enable fuzzy matching
   (setq helm-M-x-fuzzy-match t)
@@ -209,8 +211,8 @@
 
 (use-package magit
   :ensure t
-  :config
-  (global-set-key (kbd "C-x g") 'magit-status))
+  :bind
+  ("C-x g" . magit-status))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Projectile
@@ -218,8 +220,9 @@
 
 (use-package projectile
   :ensure t
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
   :config
-  (projectile-mode)
   (setq projectile-completion-system 'helm))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -228,6 +231,7 @@
 
 (use-package helm-projectile
   :ensure t
+  :defer t
   :config
   (helm-projectile-on)
   (setq projectile-switch-project-action 'helm-projectile))
@@ -302,18 +306,18 @@
 ;; rtags package is not "ensured" by use-package
 ;; Cause we must use the same version with the rdm installed
 ;; Thus we require that rtags should be installed manually and added to load-path
-(use-package rtags
-  :config
-  (setq rtags-completions-enabled t)
-  ;; (setq rtags-autostart-diagnostics t)
-  :bind (:map c-mode-base-map
-              ("M-." . rtags-find-symbol-at-point)
-              ("M-," . rtags-find-references-at-point)))
+;; (use-package rtags
+;;   :config
+;;   (setq rtags-completions-enabled t)
+;;   ;; (setq rtags-autostart-diagnostics t)
+;;   :bind (:map c-mode-base-map
+;;               ("M-." . rtags-find-symbol-at-point)
+;;               ("M-," . rtags-find-references-at-point)))
 
-(use-package helm-rtags
-  :ensure t
-  :config
-  (setq rtags-display-result-backend 'helm))
+;; (use-package helm-rtags
+;;   :ensure t
+;;   :config
+;;   (setq rtags-display-result-backend 'helm))
 
 ;; Using sandbox of rtags
 (defun get-sbroot-for-dir (dir)
@@ -334,15 +338,15 @@
           (directory-file-name f)))
       nil)))
 
-(add-hook 'find-file-hook
-          (lambda ()
-            (if (= (length rtags-socket-file) 0)
-                (let ((sbroot (if (buffer-file-name) (get-sbroot-for-buffer) nil))
-                      (socket-file nil))
-                  (when sbroot
-                    (setq socket-file (concat sbroot ".rtags/rdm.socket"))
-                    (if (file-exists-p socket-file)
-                        (setq rtags-socket-file socket-file)))))))
+;; (add-hook 'find-file-hook
+;;           (lambda ()
+;;             (if (= (length rtags-socket-file) 0)
+;;                 (let ((sbroot (if (buffer-file-name) (get-sbroot-for-buffer) nil))
+;;                       (socket-file nil))
+;;                   (when sbroot
+;;                     (setq socket-file (concat sbroot ".rtags/rdm.socket"))
+;;                     (if (file-exists-p socket-file)
+;;                         (setq rtags-socket-file socket-file)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ycmd
@@ -384,49 +388,49 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; TODO: Support reading base-time from document attributes
-(setq krm-base-time 1530460800) ;; 2018-07-02 00:00:00
-(defun krm-calc-timestamp (week day)
-  (seconds-to-time (+ krm-base-time (* (+ (* (- week 1) 7) (- day 1)) 86400))))
-(defun krm-weektime (week day)
-  (concat "W" (number-to-string week) "." (number-to-string day)))
-(defun krm-weektime-range (week1 day1 week2 day2)
-  (concat (krm-weektime week1 day1) "-" (krm-weektime week2 day2)))
-(defun krm-time (week day)
-  (concat "<"
-          (format-time-string "%Y-%m-%d %a" (krm-calc-timestamp week day))
-          ">"))
-(defun krm-time-range (week1 day1 week2 day2)
-  (concat (krm-time week1 day1) "--" (krm-time week2 day2)))
-(defun krm-set-time (week day)
-  (interactive "nWeek: \nnDay: ")
-  (progn
-    (org-entry-put (point) "WEEKTIME" (krm-weektime week day))
-    (org-entry-put (point) "TIME" (krm-time week day))))
-(defun krm-set-time-range (week1 day1 week2 day2)
-  (interactive "nWeek1: \nnDay1: \nnWeek2: \nnDay2: ")
-  (progn
-    (org-entry-put (point) "WEEKTIME" (krm-weektime-range week1 day1 week2 day2))
-    (org-entry-put (point) "TIME" (krm-time-range week1 day1 week2 day2))))
+;; (setq krm-base-time 1530460800) ;; 2018-07-02 00:00:00
+;; (defun krm-calc-timestamp (week day)
+;;   (seconds-to-time (+ krm-base-time (* (+ (* (- week 1) 7) (- day 1)) 86400))))
+;; (defun krm-weektime (week day)
+;;   (concat "W" (number-to-string week) "." (number-to-string day)))
+;; (defun krm-weektime-range (week1 day1 week2 day2)
+;;   (concat (krm-weektime week1 day1) "-" (krm-weektime week2 day2)))
+;; (defun krm-time (week day)
+;;   (concat "<"
+;;           (format-time-string "%Y-%m-%d %a" (krm-calc-timestamp week day))
+;;           ">"))
+;; (defun krm-time-range (week1 day1 week2 day2)
+;;   (concat (krm-time week1 day1) "--" (krm-time week2 day2)))
+;; (defun krm-set-time (week day)
+;;   (interactive "nWeek: \nnDay: ")
+;;   (progn
+;;     (org-entry-put (point) "WEEKTIME" (krm-weektime week day))
+;;     (org-entry-put (point) "TIME" (krm-time week day))))
+;; (defun krm-set-time-range (week1 day1 week2 day2)
+;;   (interactive "nWeek1: \nnDay1: \nnWeek2: \nnDay2: ")
+;;   (progn
+;;     (org-entry-put (point) "WEEKTIME" (krm-weektime-range week1 day1 week2 day2))
+;;     (org-entry-put (point) "TIME" (krm-time-range week1 day1 week2 day2))))
 
-(defun krm-set-owner (owner)
-  (interactive "sOwner: ")
-  (org-entry-put (point) "OWNER" owner))
+;; (defun krm-set-owner (owner)
+;;   (interactive "sOwner: ")
+;;   (org-entry-put (point) "OWNER" owner))
 
-(add-hook 'org-mode-hook
-  (lambda ()
-    (define-key org-mode-map (kbd "C-c C-h t") 'krm-set-time)
-    (define-key org-mode-map (kbd "C-c C-h r") 'krm-set-time-range)
-    (define-key org-mode-map (kbd "C-c C-h o") 'krm-set-owner)))
+;; (add-hook 'org-mode-hook
+;;   (lambda ()
+;;     (define-key org-mode-map (kbd "C-c C-h t") 'krm-set-time)
+;;     (define-key org-mode-map (kbd "C-c C-h r") 'krm-set-time-range)
+;;     (define-key org-mode-map (kbd "C-c C-h o") 'krm-set-owner)))
 
-(defun krm-headline-append-properties (backend)
-  "Append properties into each headline in KRM."
-  (org-map-entries
-   (lambda () (progn (end-of-line)
-                     (insert " ")
-                     (insert (or (org-entry-get (point) "WEEKTIME") ""))
-                     (insert " ")
-                     (insert (or (org-entry-get (point) "OWNER") ""))))))
-(add-hook 'org-export-before-parsing-hook 'krm-headline-append-properties)
+;; (defun krm-headline-append-properties (backend)
+;;   "Append properties into each headline in KRM."
+;;   (org-map-entries
+;;    (lambda () (progn (end-of-line)
+;;                      (insert " ")
+;;                      (insert (or (org-entry-get (point) "WEEKTIME") ""))
+;;                      (insert " ")
+;;                      (insert (or (org-entry-get (point) "OWNER") ""))))))
+;; (add-hook 'org-export-before-parsing-hook 'krm-headline-append-properties)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
