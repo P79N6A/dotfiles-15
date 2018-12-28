@@ -25,6 +25,8 @@ ln -sT ~/.dotfiles/tmux.conf ~/.tmux.conf
 # emacs
 rm -f ~/.emacs.d
 ln -sT ~/.dotfiles/emacs.d/ ~/.emacs.d
+# create custom.el if not exists
+touch ~/.emacs.d/custom.el
 
 # yasnippets
 rm -f ~/.yasnippets
