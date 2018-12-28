@@ -8,3 +8,4 @@ fi
 # User specific environment and startup programs
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.dotfiles/bin:$PATH"

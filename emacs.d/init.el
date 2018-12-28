@@ -310,16 +310,14 @@
 ;; RTags
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; rtags package is not "ensured" by use-package
-;; Cause we must use the same version with the rdm installed
-;; Thus we require that rtags should be installed manually and added to load-path
-;; (use-package rtags
-;;   :config
-;;   (setq rtags-completions-enabled t)
-;;   ;; (setq rtags-autostart-diagnostics t)
-;;   :bind (:map c-mode-base-map
-;;               ("M-." . rtags-find-symbol-at-point)
-;;               ("M-," . rtags-find-references-at-point)))
+(use-package rtags
+  :ensure t
+  :config
+  ;; (setq rtags-completions-enabled t)
+  ;; (setq rtags-autostart-diagnostics t)
+  :bind (:map c-mode-base-map
+              ("M-." . rtags-find-symbol-at-point)
+              ("M-," . rtags-find-references-at-point)))
 
 ;; (use-package helm-rtags
 ;;   :ensure t
@@ -327,23 +325,23 @@
 ;;   (setq rtags-display-result-backend 'helm))
 
 ;; Using sandbox of rtags
-(defun get-sbroot-for-dir (dir)
-  "Find sandbox root of file for rtags"
-  (if (or (not dir) (not (file-accessible-directory-p dir)) (string= dir "/"))
-      nil
-    (if (file-accessible-directory-p (concat dir ".rtags"))
-        dir
-      (get-sbroot-for-dir (file-name-directory (directory-file-name dir)))))
-  )
+;; (defun get-sbroot-for-dir (dir)
+;;   "Find sandbox root of file for rtags"
+;;   (if (or (not dir) (not (file-accessible-directory-p dir)) (string= dir "/"))
+;;       nil
+;;     (if (file-accessible-directory-p (concat dir ".rtags"))
+;;         dir
+;;       (get-sbroot-for-dir (file-name-directory (directory-file-name dir)))))
+;;   )
 
-(defun get-sbroot-for-buffer ()
-  "Find sandbox root of buffer for rtags"
-  (let ((f (buffer-file-name (current-buffer))))
-    (if (stringp f)
-        (get-sbroot-for-dir
-         (file-name-directory
-          (directory-file-name f)))
-      nil)))
+;; (defun get-sbroot-for-buffer ()
+;;   "Find sandbox root of buffer for rtags"
+;;   (let ((f (buffer-file-name (current-buffer))))
+;;     (if (stringp f)
+;;         (get-sbroot-for-dir
+;;          (file-name-directory
+;;           (directory-file-name f)))
+;;       nil)))
 
 ;; (add-hook 'find-file-hook
 ;;           (lambda ()
