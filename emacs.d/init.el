@@ -43,8 +43,6 @@
 (set-frame-font "Inconsolata 18" nil t)
 
 ;; Theme
-;; (load-theme 'tango-dark t)
-;; (load-theme 'dracula t)
 (use-package monokai-theme
   :ensure t
   :config (load-theme 'monokai t))
@@ -59,7 +57,7 @@
       (tool-bar-mode -1)
       (scroll-bar-mode -1)))
 
-;; UTF-8
+;; Use UTF-8 everywhere
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
@@ -89,26 +87,8 @@
 (setq-default indent-tabs-mode nil)
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-;;
-;; linum-mode is too slow and laggy, so I tried the nlinum -mode
 ;; Line number
-;; (global-linum-mode t)
-;; (unless window-system
-;;   (add-hook 'linum-before-numbering-hook
-;;             (lambda ()
-;;               (setq-local linum-format-fmt
-;;                           (let ((w (length (number-to-string
-;;                                             (count-lines (point-min) (point-max))))))
-;;                             (concat "%" (number-to-string w) "d"))))))
-
-;; (defun linum-format-func (line)
-;;   (concat
-;;    (propertize (format linum-format-fmt line) 'face 'linum)
-;;    (propertize " " 'face 'mode-line)))
-
-;; (unless window-system
-;;   (setq linum-format 'linum-format-func))
-
+;; linum-mode is slow and laggy, use nlinum-mode instead.
 (use-package nlinum
   :ensure t
   :config
