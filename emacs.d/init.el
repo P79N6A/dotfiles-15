@@ -101,15 +101,18 @@
   :config
   (global-nlinum-mode t))
 
+;; Temporray disable fci-mode for it is conflicting with company-mode,
+;; and I don't want to the hack currently.
+;;
 ;; Column indicator
-(use-package fill-column-indicator
-  :ensure t
-  :config
-  (setq fci-rule-width 1)
-  (setq fci-rule-color "white")
-  (setq-default fci-rule-column 80)
-  :hook
-  (prog-mode . fci-mode))
+;; (use-package fill-column-indicator
+;;   :ensure t
+;;   :config
+;;   (setq fci-rule-width 1)
+;;   (setq fci-rule-color "white")
+;;   (setq-default fci-rule-column 80)
+;;   :hook
+;;   (prog-mode . fci-mode))
 
 ;; Ediff
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -243,17 +246,18 @@
 ;; Company
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (use-package company
-;;   :ensure t
-;;   :hook (prog-mode . company-mode)
-;;   :config
-;;   ;; Set backends for company
-;;   (setq-default company-backends '(company-capf company-keywords))
-;;   ;; Immediately auto compelete (no delay)
-;;   (setq company-idle-delay 0.5)
-;;   ;; Auto complete after 1 char is entered
-;;   (setq company-minimum-prefix-length 1)
-;;   (setq company-show-numbers t))
+(use-package company
+  :ensure t
+  :hook (prog-mode . company-mode)
+  :config
+  ;; Set backends for company
+  (setq-default company-backends '(company-capf company-keywords))
+  ;; Immediately auto compelete
+  ;; Adjust the param to balance between fast and smooth.
+  (setq company-idle-delay 0.1)
+  ;; Auto complete after 1 char is entered
+  (setq company-minimum-prefix-length 1)
+  (setq company-show-numbers t))
 
 ;;
 ;; Turn off fci-mode temporarily when company is completing.
@@ -355,19 +359,19 @@
 ;; ycmd
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (use-package ycmd
-;;   :ensure t
-;;   :hook
-;;   (c-mode . ycmd-mode)
-;;   (c++-mode . ycmd-mode)
-;;   :config
-;;   (set-variable 'ycmd-server-command
-;;                 `("python", (file-truename "~/.emacs.d/ycmd/ycmd/")))
-;;   (setq ycmd-extra-conf-handler 'load))
+(use-package ycmd
+  :ensure t
+  :hook
+  (c-mode . ycmd-mode)
+  (c++-mode . ycmd-mode)
+  :config
+  (set-variable 'ycmd-server-command
+                `("python", (file-truename "~/.emacs.d/ycmd/ycmd/")))
+  (setq ycmd-extra-conf-handler 'load))
 
-;; (use-package company-ycmd
-;;   :ensure t
-;;   :config (company-ycmd-setup))
+(use-package company-ycmd
+  :ensure t
+  :config (company-ycmd-setup))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rust
