@@ -82,6 +82,9 @@
 ;; Enlarge GC threashold
 (setq gc-cons-threshold 20971520) ;; gc after 20MB is allocated.
 
+;; Defer font-lock (otherwise it would be laggy for large files).
+(setq jit-lock-defer-time 0)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Text Editing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
