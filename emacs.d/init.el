@@ -319,14 +319,14 @@
 ;; RTags
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package rtags
-  :ensure t
-  :config
-  ;; (setq rtags-completions-enabled t)
-  ;; (setq rtags-autostart-diagnostics t)
-  :bind (:map c-mode-base-map
-              ("M-." . rtags-find-symbol-at-point)
-              ("M-," . rtags-find-references-at-point)))
+;; (use-package rtags
+;;   :ensure t
+;;   :config
+;;   ;; (setq rtags-completions-enabled t)
+;;   ;; (setq rtags-autostart-diagnostics t)
+;;   :bind (:map c-mode-base-map
+;;               ("M-." . rtags-find-symbol-at-point)
+;;               ("M-," . rtags-find-references-at-point)))
 
 ;; (use-package helm-rtags
 ;;   :ensure t
@@ -366,19 +366,34 @@
 ;; ycmd
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package ycmd
-  :ensure t
-  :hook
-  (c-mode . ycmd-mode)
-  (c++-mode . ycmd-mode)
-  :config
-  (set-variable 'ycmd-server-command
-                `("python", (file-truename "~/.emacs.d/ycmd/ycmd/")))
-  (setq ycmd-extra-conf-handler 'load))
+;; (use-package ycmd
+;;   :ensure t
+;;   :hook
+;;   (c-mode . ycmd-mode)
+;;   (c++-mode . ycmd-mode)
+;;   :config
+;;   (set-variable 'ycmd-server-command
+;;                 `("python", (file-truename "~/.emacs.d/ycmd/ycmd/")))
+;;   (setq ycmd-extra-conf-handler 'load))
 
-(use-package company-ycmd
+;; (use-package company-ycmd
+;;   :ensure t
+;;   :config (company-ycmd-setup))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; emacs-cquery
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package cquery
   :ensure t
-  :config (company-ycmd-setup))
+  :config
+  (setq cquery-extra-args '("--log-file=/tmp/cq.log")))
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (add-hook 'c-mode-hook #'lsp)
+  (add-hook 'c++-mode-hook #'lsp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rust
