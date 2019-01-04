@@ -336,8 +336,8 @@
   ;; different system includes with the project we are developing, thus
   ;; using discovered system includes would cause problem for cquery.
   (setq cquery-extra-init-params '(:discoverSystemIncludes :json-false))
+  (setq cquery-sem-highlight-method 'font-lock)
   (setq cquery-cache-dir "~/.cquery/.cquery_cached_index"))
-  ;;(setq cquery-sem-highlight-method 'overlay))
 
 (use-package lsp-mode
   :ensure t
