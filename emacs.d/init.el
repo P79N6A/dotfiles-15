@@ -212,6 +212,11 @@
   (setq helm-recentf-fuzzy-match t)
   (setq helm-buffers-fuzzy-matching t))
 
+(use-package helm-xref
+  :ensure t
+  :config
+  (setq xref-show-xrefs-function 'helm-xref-show-xrefs))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Magit
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -261,10 +266,9 @@
   :config
   ;; Set backends for company
   (setq-default company-backends '(company-capf company-keywords))
-  ;; Immediately auto compelete
   ;; Adjust the param to balance between fast and smooth.
   (setq company-idle-delay 0.1)
-  ;; Auto complete after 1 char is entered
+  ;; Auto complete after n char is entered
   (setq company-minimum-prefix-length 1)
   (setq company-show-numbers t))
 
@@ -285,6 +289,11 @@
 ;; (add-hook 'company-completion-started-hook 'company-turn-off-fci)
 ;; (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
 ;; (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci)
+
+(use-package company-lsp
+  :ensure t
+  :config
+  (push 'company-lsp company-backends))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flycheck
@@ -314,6 +323,81 @@
   (c-set-offset 'innamespace [0])
   (c-set-offset 'brace-list-intro '+))
 (add-hook 'c++-mode-hook 'my-c++-setup)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; emacs-cquery
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package cquery
+  :ensure t
+  :config
+  (setq cquery-extra-args '("--log-file=~/.cquery/cquery.log"))
+  ;; On Centos7, we need to compile the cquery with devtoolset-7, which has
+  ;; different system includes with the project we are developing, thus
+  ;; using discovered system includes would cause problem for cquery.
+  (setq cquery-extra-init-params '(:discoverSystemIncludes :json-false))
+  (setq cquery-cache-dir "~/.cquery/.cquery_cached_index"))
+  ;;(setq cquery-sem-highlight-method 'overlay))
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (add-hook 'c-mode-hook #'lsp)
+  (add-hook 'c++-mode-hook #'lsp))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;
+;; Cellar
+;; Stuffs I don't use currently, but maybe valuable in the future.
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Rust
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (use-package rust-mode
+;;   :ensure t
+;;   :config
+;;   (add-hook 'rust-mode-hook #'lsp-rust-enable))
+
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :config
+;;   (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
+
+;; (use-package lsp-rust
+;;   :ensure t)
+
+;;
+;; rtags seems not very good at completion. (always missing symbols)
+;;
+;; (use-package company-rtags
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'company-backends 'company-rtags))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Irony
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;
+;; Irony is good enough generally, but too slow to load cdb in huge project.
+;;
+
+;; (use-package irony
+;;   :ensure t
+;;   :hook
+;;   (c++-mode . irony-mode)
+;;   (c-mode . irony-mode)
+;;   (irony-mode . irony-cdb-autosetup-compile-options))
+
+;; (use-package company-irony
+;;   :ensure t
+;;   :config
+;;   (add-to-list 'company-backends 'company-irony))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; RTags
@@ -379,124 +463,6 @@
 ;; (use-package company-ycmd
 ;;   :ensure t
 ;;   :config (company-ycmd-setup))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; emacs-cquery
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package cquery
-  :ensure t
-  :config
-  (setq cquery-extra-args '("--log-file=/tmp/cq.log")))
-
-(use-package lsp-mode
-  :ensure t
-  :config
-  (add-hook 'c-mode-hook #'lsp)
-  (add-hook 'c++-mode-hook #'lsp))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Rust
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (use-package rust-mode
-;;   :ensure t
-;;   :config
-;;   (add-hook 'rust-mode-hook #'lsp-rust-enable))
-
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :config
-;;   (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
-
-;; (use-package lsp-rust
-;;   :ensure t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; KRM: Keep Rolling Meeting
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; TODO: Support reading base-time from document attributes
-;; (setq krm-base-time 1530460800) ;; 2018-07-02 00:00:00
-;; (defun krm-calc-timestamp (week day)
-;;   (seconds-to-time (+ krm-base-time (* (+ (* (- week 1) 7) (- day 1)) 86400))))
-;; (defun krm-weektime (week day)
-;;   (concat "W" (number-to-string week) "." (number-to-string day)))
-;; (defun krm-weektime-range (week1 day1 week2 day2)
-;;   (concat (krm-weektime week1 day1) "-" (krm-weektime week2 day2)))
-;; (defun krm-time (week day)
-;;   (concat "<"
-;;           (format-time-string "%Y-%m-%d %a" (krm-calc-timestamp week day))
-;;           ">"))
-;; (defun krm-time-range (week1 day1 week2 day2)
-;;   (concat (krm-time week1 day1) "--" (krm-time week2 day2)))
-;; (defun krm-set-time (week day)
-;;   (interactive "nWeek: \nnDay: ")
-;;   (progn
-;;     (org-entry-put (point) "WEEKTIME" (krm-weektime week day))
-;;     (org-entry-put (point) "TIME" (krm-time week day))))
-;; (defun krm-set-time-range (week1 day1 week2 day2)
-;;   (interactive "nWeek1: \nnDay1: \nnWeek2: \nnDay2: ")
-;;   (progn
-;;     (org-entry-put (point) "WEEKTIME" (krm-weektime-range week1 day1 week2 day2))
-;;     (org-entry-put (point) "TIME" (krm-time-range week1 day1 week2 day2))))
-
-;; (defun krm-set-owner (owner)
-;;   (interactive "sOwner: ")
-;;   (org-entry-put (point) "OWNER" owner))
-
-;; (add-hook 'org-mode-hook
-;;   (lambda ()
-;;     (define-key org-mode-map (kbd "C-c C-h t") 'krm-set-time)
-;;     (define-key org-mode-map (kbd "C-c C-h r") 'krm-set-time-range)
-;;     (define-key org-mode-map (kbd "C-c C-h o") 'krm-set-owner)))
-
-;; (defun krm-headline-append-properties (backend)
-;;   "Append properties into each headline in KRM."
-;;   (org-map-entries
-;;    (lambda () (progn (end-of-line)
-;;                      (insert " ")
-;;                      (insert (or (org-entry-get (point) "WEEKTIME") ""))
-;;                      (insert " ")
-;;                      (insert (or (org-entry-get (point) "OWNER") ""))))))
-;; (add-hook 'org-export-before-parsing-hook 'krm-headline-append-properties)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;
-;; Cellar
-;; Stuffs I don't use currently, but maybe valuable in the future.
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;
-;; rtags seems not very good at completion. (always missing symbols)
-;;
-;; (use-package company-rtags
-;;   :ensure t
-;;   :config
-;;   (add-to-list 'company-backends 'company-rtags))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Irony
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;
-;; Irony is good enough generally, but too slow to load cdb in huge project.
-;;
-
-;; (use-package irony
-;;   :ensure t
-;;   :hook
-;;   (c++-mode . irony-mode)
-;;   (c-mode . irony-mode)
-;;   (irony-mode . irony-cdb-autosetup-compile-options))
-
-;; (use-package company-irony
-;;   :ensure t
-;;   :config
-;;   (add-to-list 'company-backends 'company-irony))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Flx
