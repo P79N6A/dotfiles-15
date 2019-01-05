@@ -6,10 +6,6 @@
 ;; Bootstrap package system
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Setup local package load path
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/")
-
 (require 'package)
 ;; Setup package repositories
 (setq package-archives
@@ -47,9 +43,9 @@
 (set-frame-font "Inconsolata 18" nil t)
 
 ;; Theme
-;; (use-package monokai-theme
-;;   :ensure t
-;;   :config (load-theme 'monokai t))
+(use-package monokai-theme
+  :ensure t
+  :config (load-theme 'monokai t))
 
 ;; Basic UI setup
 (setq inhibit-startup-screen t)
