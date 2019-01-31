@@ -327,19 +327,28 @@
 (use-package cquery
   :ensure t
   :config
-  (setq cquery-extra-args '("--log-file=~/.cquery/cquery.log"))
+  (setq cquery-extra-args '("--log-file=/var/rtags/foreground/frank/cquery.log"))
   ;; On Centos7, we need to compile the cquery with devtoolset-7, which has
   ;; different system includes with the project we are developing, thus
   ;; using discovered system includes would cause problem for cquery.
   (setq cquery-extra-init-params '(:discoverSystemIncludes :json-false))
-  (setq cquery-sem-highlight-method 'font-lock)
-  (setq cquery-cache-dir "~/.cquery/.cquery_cached_index"))
+  ;; (setq cquery-sem-highlight-method 'font-lock)
+  (setq cquery-cache-dir "/var/rtags/foreground/frank/cquery_cached_index"))
 
 (use-package lsp-mode
   :ensure t
   :config
   (add-hook 'c-mode-hook #'lsp)
   (add-hook 'c++-mode-hook #'lsp))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; lua
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package lua-mode
+  :ensure t
+  :config
+  (setq lua-indent-level 4))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
