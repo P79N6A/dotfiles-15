@@ -28,6 +28,10 @@ alias ll='ls -Alh'
 alias ..='cd ..'
 alias ...='cd ../..'
 
+# Alias for Socks Proxy
+alias proxy='export all_proxy=socks5://127.0.0.1:1080'
+alias unproxy='unset all_proxy'
+
 # Prompt
 export PS1="[\u@\h:\w]\$ "
 
