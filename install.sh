@@ -14,9 +14,11 @@ ln -sT ~/.dotfiles/bashrc ~/.bashrc
 rm -f ~/.bash_profile
 ln -sT ~/.dotfiles/bash_profile ~/.bash_profile
 
-# ls_colors
-rm -f ~/.ls_colors
-ln -sT ~/.dotfiles/ls_colors ~/.ls_colors
+# dircolors
+rm -f ~/.dircolors
+ln -sT ~/.dotfiles/dircolors ~/.dircolors
+
+exit 0
 
 # tmux
 rm -f ~/.tmux.conf
