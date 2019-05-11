@@ -6,13 +6,13 @@ basedir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 rm -f ~/.dotfiles
 ln -sT ${basedir}/ ~/.dotfiles
 
-# bash profile
-rm -f ~/.bash_profile
-ln -sT ~/.dotfiles/bash_profile ~/.bash_profile
-
 # bashrc
 rm -f ~/.bashrc
 ln -sT ~/.dotfiles/bashrc ~/.bashrc
+
+# bash profile
+rm -f ~/.bash_profile
+ln -sT ~/.dotfiles/bash_profile ~/.bash_profile
 
 # ls_colors
 rm -f ~/.ls_colors
