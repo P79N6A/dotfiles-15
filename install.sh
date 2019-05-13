@@ -18,19 +18,13 @@ ln -sT ~/.dotfiles/bash_profile ~/.bash_profile
 rm -f ~/.dircolors
 ln -sT ~/.dotfiles/dircolors ~/.dircolors
 
-exit 0
-
 # tmux
 rm -f ~/.tmux.conf
 ln -sT ~/.dotfiles/tmux.conf ~/.tmux.conf
 
 # emacs
-rm -f ~/.emacs.d
+rm -rf ~/.emacs.d
 ln -sT ~/.dotfiles/emacs.d/ ~/.emacs.d
 # create custom.el if not exists
 touch ~/.emacs.d/custom.el
-
-# yasnippets
-rm -f ~/.yasnippets
-ln -sT ~/.dotfiles/yasnippets ~/.yasnippets
 
