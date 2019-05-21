@@ -201,12 +201,17 @@
   :hook (prog-mode . company-mode)
   :config
   ;; Set backends for company
-  (setq-default company-backends '(company-capf company-keywords))
+  (setq-default company-backends '(company-lsp company-capf company-keywords))
   ;; Adjust the param to balance between fast and smooth.
   (setq company-idle-delay 0.1)
   ;; Auto complete after n char is entered
-  (setq company-minimum-prefix-length 1)
+  (setq company-minimum-prefix-length 3)
   (setq company-show-numbers t))
+
+(use-package company-lsp
+  :ensure t
+  :config
+  (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C/C++
