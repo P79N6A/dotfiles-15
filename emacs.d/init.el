@@ -111,6 +111,13 @@
   (setq yas-snippet-dirs '("~/.emacs.d/yasnippets"))
   (yas-global-mode))
 
+;; Disable prompting for xref-find-references
+(setq xref-prompt-for-identifier
+      '(not xref-find-definitions
+            xref-find-definitions-other-window
+            xref-find-definitions-other-frame
+            xref-find-references))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
