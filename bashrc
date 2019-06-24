@@ -117,6 +117,7 @@ export LANG=en_US.UTF-8
 export PATH="${HOME}/.local/bin:${PATH}"
 export PATH="${HOME}/.dotfiles/bin:${PATH}"
 export PATH="${HOME}/.cargo/bin:${PATH}"
+export PATH="${HOME}/go/bin:{$PATH}"
 # macOS Homebrew Compatibility
 # Import serveral paths of the homebrew-installed packges into PATH.
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
