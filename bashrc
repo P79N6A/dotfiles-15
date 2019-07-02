@@ -93,7 +93,7 @@ alias ...='cd ../..'
 
 # Alias for go developmentdevbox
 # cd into go game platform dir
-alias cdgp ~/go/src/git.byted.org/ttgame/platform/
+alias cdgp='cd ~/go/src/git.byted.org/ttgame/platform/'
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
